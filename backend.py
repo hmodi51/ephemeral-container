@@ -84,6 +84,13 @@ async def launch(request: Request):
             "INSERT INTO guacamole_connection_parameter (connection_id, parameter_name, parameter_value) VALUES (%s,%s,%s)",
             [(conn_id,'hostname',ip),(conn_id,'port','22'),(conn_id,'username',lxc_user),(conn_id,'password',container_passwd)]
         )
+
+        cur.execute("INSERT INTO guacamole_entity (name, type) VALUES (%s, 'USER')", (netid,))
+
+        entity_id = cur.lastrowid
+
+        cur.execute("INSERT INTO guacamole_connection_permission (entity_id, connection_id , permission) VALUES (%s, %s , 'READ')", (entity_id , netid ,))
+
         conn.commit(); conn.close()
 
         return {
