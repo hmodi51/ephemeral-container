@@ -1,0 +1,30 @@
+# leaving it for now because have to figure out how to deploy because server is behind private network
+
+name: Deploy both frontend and backend on server
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+
+jobs:
+  Deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v4
+
+      - name: Add private key to agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PK }}
+
+      - name: Deploy to server
+        env:
+          SERVER_USER:  ${{ secrets.SERVER_USER }}
+          SERVER_IP: 
+
+    
